@@ -11,6 +11,9 @@
 static NSMutableDictionary *_ColorNameCache = nil;
 static NSMutableDictionary *_CrayolaNameCache = nil;
 
+/* Hex character set for scanning color values from strings */
+static NSCharacterSet *_HexCharacterSet = nil;
+
 @interface UIColor (Expanded_Private)
 
 + (UIColor *)__searchForColorByName:(NSString *)cssColorName;
@@ -24,6 +27,7 @@ static NSMutableDictionary *_CrayolaNameCache = nil;
 	
 	_ColorNameCache = [[NSMutableDictionary alloc] init];
 	_CrayolaNameCache = [[NSMutableDictionary alloc] init];
+   _HexCharacterSet = [NSCharacterSet characterSetWithCharactersInString:@"0123456789abcdefABCDEF"];
 }
 
 - (CGColorSpaceModel)colorSpaceModel {
@@ -703,8 +707,55 @@ static NSMutableDictionary *_CrayolaNameCache = nil;
 
 // Returns a UIColor by scanning the string for a hex number and passing that to +[UIColor colorWithRGBHex:]
 // Skips any leading whitespace and ignores any trailing characters
+// Automatically detects and handles an alpha component in the hex string as
+// well as 3-digit shorthand color codes.
 + (UIColor *)colorWithHexString:(NSString *)stringToConvert {
 
+	if ([stringToConvert hasPrefix:@"#"]) {
+		stringToConvert = [stringToConvert substringFromIndex:1];
+	}
+   
+	NSString *hexString;
+   NSUInteger hexStringLength;
+	NSScanner *scanner = [NSScanner scannerWithString:stringToConvert];
+   
+   [scanner scanCharactersFromSet:_HexCharacterSet intoString:&hexString];
+   
+   hexStringLength = hexString.length;
+   scanner.scanLocation = 0;
+   
+	unsigned hexNum;
+	
+	if (![scanner scanHexInt:&hexNum]) {
+		return nil;
+	}
+   
+   if (hexStringLength == 6)
+   {
+      return [UIColor colorWithRGBHex:hexNum];
+   }
+   else if (hexStringLength == 8)
+   {
+      return [UIColor colorWithRGBAHex:hexNum];
+   }
+   else if (hexStringLength == 3)
+   {
+      unsigned convertedHexNum = 0;
+      int r = hexNum >> 8 & 0xF;
+      int g = hexNum >> 4 & 0xF;
+      int b = hexNum >> 0 & 0xF;
+      
+      convertedHexNum = b | b << 4 | g << 8 | g << 12 | r << 16 | r << 20;
+      return [UIColor colorWithRGBHex:convertedHexNum];
+   }
+	
+	return [UIColor colorWithRGBHex:hexNum];
+}
+
+// Returns a UIColor by scanning the string for a hex number and passing that to +[UIColor colorWithRGBAHex:]
+// Skips any leading whitespace and ignores any trailing characters
++ (UIColor *)colorAndAlphaWithHexString:(NSString *)stringToConvert {
+   
 	if ([stringToConvert hasPrefix:@"#"]) {
 		stringToConvert = [stringToConvert substringFromIndex:1];
 	}
@@ -716,16 +767,6 @@ static NSMutableDictionary *_CrayolaNameCache = nil;
 		return nil;
 	}
 	
-	return [UIColor colorWithRGBHex:hexNum];
-}
-
-// Returns a UIColor by scanning the string for a hex number and passing that to +[UIColor colorWithRGBAHex:]
-// Skips any leading whitespace and ignores any trailing characters
-+ (UIColor *)colorAndAlphaWithHexString:(NSString *)stringToConvert {
-
-	NSScanner *scanner = [NSScanner scannerWithString:stringToConvert];
-	unsigned hexNum;
-	if (![scanner scanHexInt:&hexNum]) return nil;
 	return [UIColor colorWithRGBAHex:hexNum];
 }
 
