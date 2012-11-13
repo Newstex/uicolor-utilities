@@ -216,7 +216,7 @@ static NSCharacterSet *_HexCharacterSet = nil;
 	// http://en.wikipedia.org/wiki/Luma_(video)
 	// Y = 0.2126 R + 0.7152 G + 0.0722 B
 	
-	return r*0.2126f + g*0.7152f + b*0.0722f;
+	return sqrtf(r*r*0.241f + g*g*0.691f + b*b*0.068f);
 }
 
 - (UInt32)rgbHex {
