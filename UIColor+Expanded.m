@@ -916,10 +916,10 @@ static NSCharacterSet *_HexCharacterSet = nil;
 		if (![scanner isAtEnd]) return nil;
 		
 		// Form the color, pinning the numbers into range
-		return [UIColor colorWithRed:MAX(0.0, MIN(1.0, rgb[0] / 255.0f))
-							   green:MAX(0.0, MIN(1.0, rgb[1] / 255.0f))
-								blue:MAX(0.0, MIN(1.0, rgb[2] / 255.0f))
-							   alpha:MAX(0.0, MIN(1.0, alpha))];
+		return [UIColor colorWithRed:(CGFloat)MAX(0.0, MIN(1.0, rgb[0] / 255.0f))
+							   green:(CGFloat)MAX(0.0, MIN(1.0, rgb[1] / 255.0f))
+								blue:(CGFloat)MAX(0.0, MIN(1.0, rgb[2] / 255.0f))
+							   alpha:(CGFloat)MAX(0.0, MIN(1.0, alpha))];
 		
 	} else if ([scanner scanString:@"hsl(" intoString:nil] || (withAlpha = [scanner scanString:@"hsla(" intoString:nil])) {
 		
@@ -956,10 +956,10 @@ static NSCharacterSet *_HexCharacterSet = nil;
 		if (![scanner isAtEnd]) return nil;
 		
 		// Form the color, pinning the numbers into range
-		return [UIColor colorWithHue:MAX(0.0, MIN(360.0, hue))
-						  saturation:MAX(0.0, MIN(1.0, saturation / 100.0f))
-						   lightness:MAX(0.0, MIN(1.0, lightness / 100.0f))
-							   alpha:MAX(0.0, MIN(1.0, alpha))];
+		return [UIColor colorWithHue:(CGFloat)MAX(0.0, MIN(360.0, hue))
+						  saturation:(CGFloat)MAX(0.0, MIN(1.0, saturation / 100.0f))
+						   lightness:(CGFloat)MAX(0.0, MIN(1.0, lightness / 100.0f))
+							   alpha:(CGFloat)MAX(0.0, MIN(1.0, alpha))];
 		
 	} else {
 		// Assume it's a css color name
