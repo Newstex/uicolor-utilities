@@ -76,6 +76,7 @@
 + (UIColor *)colorWithGray:(CGFloat)gray;
 + (UIColor *)colorWithGrayHex:(UInt8)gray;
 + (UIColor *)colorWithHexString:(NSString *)stringToConvert;
++ (UIColor *)colorWithHexString:(NSString *)stringToConvert alpha:(CGFloat)alpha;
 + (UIColor *)colorAndAlphaWithHexString:(NSString *)stringToConvert;
 
 + (UIColor *)colorWithName:(NSString *)cssColorName;
