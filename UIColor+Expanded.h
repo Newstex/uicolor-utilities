@@ -49,7 +49,9 @@
 - (UIColor *)colorByInterpolatingToColor:(UIColor *)color byFraction:(CGFloat)fraction;
 
 // Related colors
-- (UIColor *)contrastingColor;			// A good contrasting color: will be either black or white
+- (UIColor *)colorWithHueComponent:(CGFloat)hue;   // Color with the specified hue
+- (UIColor *)inverseColor;          // The opposite color
+- (UIColor *)contrastingColor;		// A good contrasting color: will be either black or white
 - (UIColor *)complementaryColor;		// A complementary color that should look good with this color
 - (NSArray*)triadicColors;				// Two colors that should look good with this color
 - (NSArray*)analogousColorsWithStepAngle:(CGFloat)stepAngle pairCount:(int)pairs;	// Multiple pairs of colors

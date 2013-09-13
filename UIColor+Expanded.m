@@ -429,6 +429,27 @@ static NSCharacterSet *_HexCharacterSet = nil;
 
 #pragma mark Complementary Colors, etc
 
+- (UIColor *)inverseColor
+{
+	CGFloat r, g, b, a;
+
+	if (![self red:&r green:&g blue:&b alpha:&a]) {
+		return 0;
+	}
+
+   return [UIColor colorWithRed:1.0f - r
+                          green:1.0f - g
+                           blue:1.0f - b
+                          alpha:a];
+}
+
+- (UIColor *)colorWithHueComponent:(CGFloat)hue {
+   CGFloat h,s,b,a;
+	if (![self hue:&h saturation:&s brightness:&b alpha:&a]) return nil;
+
+   return [UIColor colorWithHue:hue saturation:s brightness:b alpha:a];
+}
+
 // Pick a color that is likely to contrast well with this color
 - (UIColor *)contrastingColor {
 
