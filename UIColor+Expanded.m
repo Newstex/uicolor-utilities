@@ -614,7 +614,7 @@ static NSCharacterSet *_HexCharacterSet = nil;
 	}
 	
 	const NSUInteger kMaxComponents = 4;
-	CGFloat c[kMaxComponents];
+	float c[kMaxComponents];
 	NSUInteger i = 0;
 	
 	if (![scanner scanFloat:&c[i++]]) {
